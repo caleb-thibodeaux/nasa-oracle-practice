@@ -15,7 +15,8 @@ def json_to_sqlite_input(json_file, db_file="./SQLITE_DB/data.db"):
     conn = sqlite3.connect(db_file)
     c = conn.cursor()
 
-    c.executemany("INSERT INTO data_in VALUES(?,?,?,?,?,?,?,?,?,?,?,?",data)
+    for item in data:
+        c.execute("INSERT OR IGNORE INTO data_in VALUES(?,?,?,?,?,?,?,?,?,?,?,?);",(item['time_tag'],item['bt'],item['bx_gse'],item['by_gse'],item['bz_gse'],item['theta_gse'],item['phi_gse'],item['bx_gsm'],item['by_gsm'],item['bz_gsm'],item['theta_gsm'],item['phi_gsm']))
 
     conn.commit()
     conn.close()
@@ -27,7 +28,8 @@ def json_to_sqlite_validate(json_file, db_file="./SQLITE_DB/data.db"):
     conn = sqlite3.connect(db_file)
     c = conn.cursor()
 
-    c.executemany("INSERT INTO data_in VALUES(?,?,?,?",data)
+    for item in data:
+        c.execute("INSERT OR IGNORE INTO data_validate VALUES(?,?,?,?);",(item['time_tag'],item['kp_index'],item['estimated_kp'],item['kp']))
 
     conn.commit()
     conn.close()
